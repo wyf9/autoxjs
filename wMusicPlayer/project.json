@@ -5,7 +5,12 @@
     "x86",
     "x86_64"
   ],
-  "assets": [],
+  "assets": [
+    {
+      "form": "/storage/emulated/0/wyf9/dev/autoxjs/wMusicPlayer",
+      "to": "/project"
+    }
+  ],
   "buildDir": "build",
   "build": {
     "build_id": null,
@@ -14,31 +19,38 @@
   },
   "useFeatures": [],
   "icon": "res/logo.png",
-  "ignoredDirs": [],
+  "ignoredDirs": [
+    "build"
+  ],
   "launchConfig": {
-    "displaySplash": true,
-    "hideAccessibilityServices": false,
+    "displaySplash": false,
+    "hideAccessibilityServices": true,
     "hideLauncher": false,
     "hideLogs": false,
     "stableMode": false,
     "volumeUpcontrol": false,
-    "permissions": [],
+    "permissions": [
+      "draw_overlay"
+    ],
     "serviceDesc": "使脚本自动操作(点击、长按、滑动等)所需，若关闭则只能执行不涉及自动操作的脚本。",
     "splashIcon": null,
     "splashText": "Powered by Autoxjs.com"
   },
-  "libs": [],
+  "libs": [
+    "libjackpal-androidterm5.so",
+    "libjackpal-termexec2.so"
+  ],
   "main": "main.js",
   "name": "wMusicPlayer",
-  "outputPath": null,
+  "outputPath": "/storage/emulated/0/wyf9/dev/autoxjs/wMusicPlayer/build",
   "packageName": "top.wyf9.autoxjs.wMusicPlayer",
-  "projectDirectory": null,
+  "projectDirectory": "/storage/emulated/0/wyf9/dev/autoxjs/wMusicPlayer",
   "scripts": {},
   "signingConfig": {
     "alias": null,
     "keystore": null
   },
-  "sourcePath": null,
+  "sourcePath": "/storage/emulated/0/wyf9/dev/autoxjs/wMusicPlayer/main.js",
   "versionCode": 1,
   "versionName": "0.0.1"
 }
