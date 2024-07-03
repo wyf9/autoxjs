@@ -54,7 +54,7 @@ dialogs.build({
  
 function wmain() {
     wtext = "???";
-    dialogs.rawInput("输入文本内容:", " ").then(name => {
+    dialogs.rawInput("输入文本内容:", "").then(name => {
         wtext=name;
         log("内容: "+wtext);
         });
@@ -82,7 +82,7 @@ wn.wnid.click(function () {
 }).on("positive", ()=>{
     log("设置文本");
     
-    dialogs.rawInput("输入文本内容:", " ").then(name => {
+    dialogs.rawInput("输入文本内容:", "").then(name => {
         wtext=name;
         log("内容: "+wtext);
         })
