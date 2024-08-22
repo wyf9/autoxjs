@@ -54,7 +54,7 @@ dialogs.build({
  
 function wmain() {
     wtext = "???";
-    dialogs.rawInput("输入文本内容:", "").then(name => {
+    dialogs.input("输入文本内容:\n注意: 请在文本两边加上引号", "").then(name => {
         wtext=name;
         log("内容: "+wtext);
         });
@@ -82,7 +82,7 @@ wn.wnid.click(function () {
 }).on("positive", ()=>{
     log("设置文本");
     
-    dialogs.rawInput("输入文本内容:", "").then(name => {
+    dialogs.input("输入文本内容:\n注意: 请在文本两边加上引号", "").then(name => {
         wtext=name;
         log("内容: "+wtext);
         })
@@ -127,10 +127,17 @@ w.wid.click(function () {
 function(){
     stn=0;
     while (wstat) {
+    //wtext="aaa\nbbb\nccc";
+    //wtext=getClip();
+    //log("clip: '"+getClip()+"'");
     setText(wtext);
+    //var et = id("input").findOne();//className("EditText").findOne();
+    //log(et.paste());
+    //editable(true).findOne().setText(getClip());
+    //log(input(getClip()));
     click("发送");
     stn=stn+1;
-    log("发送:"+stn);
+    log("发送:"+stn+" / "+wtext);
 }});
             w.wid.setText("点击停止");
         });
