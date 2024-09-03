@@ -2,9 +2,13 @@ events.on("exit", function(){
     wstat = false;
     log("退出✓");
 });
- 
-wth = null; // 存储线程的变量
-wstat = false; // 状态
+
+function nlog(id, plog){
+    log("[#" + id + "] " + plog)
+    }
+
+lastId = 0;
+
 log("等待无障碍权限");
 auto.waitFor();
 log("获取无障碍权限成功");
@@ -53,29 +57,28 @@ toastLog("弹出悬浮窗");
 w.wid.click(function () {
     status = w.wid.getText();  //获得id="wid"的按钮的文字
     if (status == "点击停止") {
-        log("停止");
-        wstat = false;
+        nlog(nowid, "Stop");
         ui.run(function () {
             wth.interrupt();
             w.wid.setText("点击运行");  //设置按钮文本
         });
     } else {
-        log("开始");
-        wstat = true;
+        lastId += 1;
+        nowid = lastId;
+        nlog(nowid, "Start");
         ui.run(function () {
             wth = threads.start(function () {
-                toastLog("Run");
                 o = desc("更多功能").findOne().click();
-                log("更多功能: " + o);
+                nlog(nowid, "更多功能: " + o);
                 o = text("打卡").findOne().parent().parent().click();
-                log("打开界面: " + o);
+                nlog(nowid, "打开界面: " + o);
                 o = text("立即打卡").findOne().click();
-                log("立即打卡: " + o);
+                nlog(nowid, "立即打卡: " + o);
                 back();
                 sleep(250);
                 back();
                 w.wid.setText("点击运行");
-                wstat = false;
+                nlog(nowid, "Finished");
             });
         w.wid.setText("点击停止");
         });
