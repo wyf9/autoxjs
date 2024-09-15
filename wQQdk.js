@@ -1,4 +1,7 @@
-events.on("exit", function(){
+// config
+CONFIG_loop = true; // 控制是否循环
+
+events.on("exit", function () {
     wstat = false;
     log("退出✓");
 });
@@ -8,6 +11,7 @@ function nlog(id, plog){
     }
 
 lastId = 0;
+nowid = 0;
 
 log("等待无障碍权限");
 auto.waitFor();
@@ -57,28 +61,36 @@ toastLog("弹出悬浮窗");
 w.wid.click(function () {
     status = w.wid.getText();  //获得id="wid"的按钮的文字
     if (status == "点击停止") {
-        nlog(nowid, "Stop");
+        nlog(nowid, "ClickStop");
         ui.run(function () {
             wth.interrupt();
             w.wid.setText("点击运行");  //设置按钮文本
         });
     } else {
-        lastId += 1;
-        nowid = lastId;
-        nlog(nowid, "Start");
+        nlog(nowid + 1, "ClickStart");
         ui.run(function () {
+            lastId += 1;
+            nowid = lastId;
+            nlog(nowid, "Run");
             wth = threads.start(function () {
-                o = desc("更多功能").findOne().click();
-                nlog(nowid, "更多功能: " + o);
-                o = text("打卡").findOne().parent().parent().click();
-                nlog(nowid, "打开界面: " + o);
-                o = text("立即打卡").findOne().click();
-                nlog(nowid, "立即打卡: " + o);
-                back();
-                sleep(250);
-                back();
-                w.wid.setText("点击运行");
-                nlog(nowid, "Finished");
+                while(true){
+                    o = desc("更多功能").findOne().click();
+                    nlog(nowid, "更多功能: " + o);
+                    sleep(200);
+                    o = text("打卡").findOne().parent().parent().click();
+                    nlog(nowid, "打开界面: " + o);
+                    sleep(200);
+                    o = text("立即打卡").findOne().click();
+                    nlog(nowid, "立即打卡: " + o);
+                    sleep(200);
+                    back();
+                    sleep(200);
+                    back();
+                    sleep(200);
+                    back();
+                    nlog(nowid, "Finished");
+                    sleep(3456);
+                }
             });
         w.wid.setText("点击停止");
         });
