@@ -17,7 +17,28 @@ events.on("exit", function () {
 });
 
 function nlog(id, plog) {
+    /*
+    id: int, nowid
+    plog: str, 输出日志
+    */
     log("[#" + id + "] " + plog);
+}
+
+function findOneClick(obj_, desc_, nowid_, sleep_ = 0, parents_ = 0) {
+    /*
+    obj_: object, text(xxx) or desc(xxx)
+    desc_: str, 描述
+    nowid_: int, nowid
+    sleep_: int, 执行后睡眠, 单位 ms / default: 0
+    parents_: int, parent 层级数
+    */
+    thisobj_ = obj_.findOne();
+    for (let parent_now_ = 0; parent_now_ < parents_; parent_now_++) {
+        if (parents_ == 0) {
+            break;
+        }
+        
+    }
 }
 
 lastId = 0;
@@ -102,15 +123,16 @@ function wmain() {
                             sleep(3456);
                         }
                     } else {
-                        o = desc("更多功能").findOne().click();
-                        nlog(nowid, "更多功能: " + o);
-                        sleep(200);
-                        o = text("打卡").findOne().parent().parent().click();
-                        nlog(nowid, "打开界面: " + o);
-                        sleep(200);
-                        o = text("立即打卡").findOne().click();
-                        nlog(nowid, "立即打卡: " + o);
-                        sleep(200);
+                        // o = desc("更多功能").findOne().click();
+                        // nlog(nowid, "更多功能: " + o);
+                        // sleep(200);
+                        // o = text("打卡").findOne().parent().parent().click();
+                        // nlog(nowid, "打开界面: " + o);
+                        // sleep(200);
+                        // o = text("立即打卡").findOne().click();
+                        // nlog(nowid, "立即打卡: " + o);
+                        // sleep(200);
+                        findOneClick(desc("更多功能"), "更多功能", nowid, 200);
                         back();
                         sleep(200);
                         back();
