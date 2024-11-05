@@ -6,39 +6,49 @@ All Rights Reserved.
 
 // config
 CONFIG_loop = true; // bool: 控制是否循环
-CONFIG_timeout = 4000; // int: 查找控件的超时, 单位 ms
+CONFIG_timeout = 4000; // int: 查找控件的超时 (ms)
+CONFIG_sleep = 100; // int: 单次点击后等待时间 (ms)
 
 log("CONFIG_loop: " + CONFIG_loop);
 log("CONFIG_timeout: " + CONFIG_timeout);
+log("CONFIG_sleep: " + CONFIG_sleep);
 
 events.on("exit", function () {
     wstat = false;
     log("退出✓");
 });
 
-function nlog(id, plog) {
+function nlog(id_, log_) {
     /*
-    id: int, nowid
-    plog: str, 输出日志
+    id_: int, nowid
+    log_: str, 输出日志
     */
-    log("[#" + id + "] " + plog);
+    log("[#" + id_ + "] " + log_);
 }
 
-function findOneClick(obj_, desc_, nowid_, sleep_ = 0, parents_ = 0) {
+function findOneClick(obj_, desc_, nowid_, parents_) {
     /*
     obj_: object, text(xxx) or desc(xxx)
     desc_: str, 描述
     nowid_: int, nowid
-    sleep_: int, 执行后睡眠, 单位 ms / default: 0
+    sleep_: int, 执行后睡眠, 单位 ms
     parents_: int, parent 层级数
+    
+    TODO: 
     */
     thisobj_ = obj_.findOne();
-    for (let parent_now_ = 0; parent_now_ < parents_; parent_now_++) {
-        if (parents_ == 0) {
-            break;
+    //if (thisobj_ == null) {
+    //    TODO: 检测 "全员禁言中"
+    //    }
+    if (parents_ != 0) {
+        for (let parent_now_ = 0; parent_now_ < parents_; parent_now_++) {
+            thisobj_ = thisobj_.parent();
         }
-        
     }
+    ret_ = thisobj_.click();
+    nlog(nowid, desc_ + ": " + ret_);
+    sleep(CONFIG_sleep);
+    return ret_
 }
 
 lastId = 0;
@@ -98,22 +108,25 @@ function wmain() {
             });
         } else {
             nlog(nowid + 1, "ClickStart");
-            ui.run(function () {
-                lastId += 1;
-                nowid = lastId;
-                nlog(nowid, "Run");
+            ui.run(function () {                
                 wth = threads.start(function () {
                     if (CONFIG_loop) {
                         while (true) {
-                            o = desc("更多功能").findOne().click();
-                            nlog(nowid, "更多功能: " + o);
-                            sleep(200);
-                            o = text("打卡").findOne().parent().parent().click();
-                            nlog(nowid, "打开界面: " + o);
-                            sleep(200);
-                            o = text("立即打卡").findOne().click();
-                            nlog(nowid, "立即打卡: " + o);
-                            sleep(200);
+                            lastId += 1;
+                            nowid = lastId;
+                            nlog(nowid, "Run");
+                            //,o = desc("更多功能").findOne().click();
+                            // nlog(nowid, "更多功能: " + o);
+                            // sleep(200);
+                            // o = text("打卡").findOne().parent().parent().click();
+                            // nlog(nowid, "打开界面: " + o);
+                            // sleep(200);
+                            // o = text("立即打卡").findOne().click();
+                            // nlog(nowid, "立即打卡: " + o);
+                            findOneClick(desc("更多功能"), "更多功能", nowid, 0);
+                            findOneClick(text("打卡"), "打开界面", nowid, 2);
+                            findOneClick(text("立即打卡"), "立即打卡", nowid, 0);
+                            // sleep(200);
                             back();
                             sleep(200);
                             back();
@@ -123,6 +136,9 @@ function wmain() {
                             sleep(3456);
                         }
                     } else {
+                        lastId += 1;
+                        nowid = lastId;
+                        nlog(nowid, "Run");
                         // o = desc("更多功能").findOne().click();
                         // nlog(nowid, "更多功能: " + o);
                         // sleep(200);
@@ -132,11 +148,15 @@ function wmain() {
                         // o = text("立即打卡").findOne().click();
                         // nlog(nowid, "立即打卡: " + o);
                         // sleep(200);
-                        findOneClick(desc("更多功能"), "更多功能", nowid, 200);
-                        back();
-                        sleep(200);
-                        back();
+                        findOneClick(desc("更多功能"), "更多功能", nowid, 0);
+                        findOneClick(text("打卡"), "打开界面", nowid, 2);
+                        findOneClick(text("立即打卡"), "立即打卡", nowid, 0);
+                        // back();
+                        // sleep(200);
+                        // back();
                         nlog(nowid, "Finished");
+                        w.wid.setText("点击停止");
+                        return 0;                        
                     }
                 });
                 w.wid.setText("点击停止");
@@ -145,11 +165,5 @@ function wmain() {
     });
 }
 
-setInterval(() => { }, 1000);
+setInterval(() => {}, 1000);
 
-// ---
-
-// exit();
-// toastLog("Run");
-
-// toastLog("OK");
